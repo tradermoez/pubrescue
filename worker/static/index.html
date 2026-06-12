@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PubRescue — Convert Microsoft Publisher .pub files to PDF (Publisher is retiring Oct 2026)</title>
+<meta name="description" content="Microsoft Publisher reaches end of life on October 1, 2026. Convert your .pub files to PDF, PNG, SVG and editable formats in your browser — no Publisher needed. Free preview, pay only if it looks right.">
+<style>
+:root{--ink:#1a2333;--accent:#2563eb;--accent-dark:#1e40af;--bg:#f8fafc;--ok:#16a34a;--warn:#d97706}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+header{background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;font-size:1.25rem}.logo span{color:var(--accent)}
+.hero{text-align:center;padding:56px 0 28px}
+.hero h1{font-size:2.1rem;line-height:1.25;margin-bottom:14px}
+.hero p.sub{font-size:1.12rem;color:#475569;max-width:640px;margin:0 auto 8px}
+.deadline{display:inline-block;background:#fef3c7;color:#92400e;font-weight:600;padding:6px 14px;border-radius:999px;font-size:.92rem;margin-bottom:18px}
+.drop{margin:30px auto;max-width:640px;border:2px dashed #94a3b8;border-radius:14px;background:#fff;padding:48px 24px;text-align:center;cursor:pointer;transition:.15s}
+.drop.drag{border-color:var(--accent);background:#eff6ff}
+.drop strong{font-size:1.1rem}.drop p{color:#64748b;font-size:.95rem;margin-top:6px}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;border:none;border-radius:8px;padding:12px 26px;font-size:1rem;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--accent-dark)}.btn[disabled]{opacity:.5;cursor:default}
+.btn-big{font-size:1.15rem;padding:14px 34px}
+#results{max-width:760px;margin:0 auto 40px;display:none}
+.filecard{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:14px;display:flex;gap:16px;align-items:flex-start}
+.filecard img{width:120px;border:1px solid #e2e8f0;border-radius:4px}
+.filecard .meta{flex:1}
+.status-done{color:var(--ok);font-weight:600}.status-error{color:#dc2626}.status-converting{color:var(--warn)}
+.paybar{position:sticky;bottom:0;background:#fff;border-top:1px solid #e2e8f0;padding:14px 0;text-align:center;display:none}
+.trust{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;color:#64748b;font-size:.9rem;padding:8px 0 30px}
+section.info{background:#fff;border-top:1px solid #e2e8f0;padding:48px 0}
+section.info h2{font-size:1.5rem;margin-bottom:12px}
+section.info h3{font-size:1.15rem;margin:22px 0 8px}
+section.info p,section.info li{color:#334155;max-width:720px}
+section.info ul{padding-left:22px}
+footer{padding:28px 0;text-align:center;color:#94a3b8;font-size:.88rem}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #cbd5e1;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="logo">Pub<span>Rescue</span></div>
+  <div style="color:#64748b;font-size:.9rem">Save your Publisher files before it's too late</div>
+</div></header>
+
+<div class="hero wrap">
+  <div class="deadline">⚠️ Microsoft is retiring Publisher on October 1, 2026</div>
+  <h1>Convert your Publisher .pub files to PDF — without Publisher</h1>
+  <p class="sub">After October 2026, Microsoft 365 will no longer open or edit .pub files. Convert your newsletters, bulletins, flyers and brochures now. <strong>Free preview of every file — pay only if the result looks right.</strong></p>
+</div>
+
+<div class="wrap">
+  <div class="drop" id="drop">
+    <strong>Drop your .pub files here</strong> or click to choose
+    <p>Up to 50 files per batch · PDF, PNG, SVG &amp; editable ODG output · Files deleted after 24h</p>
+    <input type="file" id="fileinput" accept=".pub" multiple hidden>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="trust">
+    <span>🔍 Preview before you pay</span>
+    <span>💲 $19 one-time per batch</span>
+    <span>🗑️ Files auto-deleted in 24 hours</span>
+    <span>📧 Not happy? Full refund</span>
+  </div>
+</div>
+
+<div class="paybar" id="paybar">
+  <div class="wrap">
+    <button class="btn btn-big" id="paybtn">Unlock &amp; download all conversions — $19</button>
+    <div style="color:#64748b;font-size:.85rem;margin-top:6px">One-time payment for this whole batch. Instant download. Refund if you're not satisfied.</div>
+  </div>
+</div>
+
+<section class="info"><div class="wrap">
+  <h2>Microsoft Publisher is going away. Your files don't have to.</h2>
+  <p>Microsoft has announced that <strong>Publisher reaches end of life on October 1, 2026</strong>. After that date, Microsoft 365 subscribers will no longer be able to open or edit .pub files. Decades of church bulletins, school newsletters, club flyers and small-business brochures are stored in a format that is about to become unreadable.</p>
+
+  <h3>What PubRescue does</h3>
+  <ul>
+    <li><strong>PDF</strong> — the format Microsoft itself recommends for preserving your documents. Print it, share it, archive it.</li>
+    <li><strong>PNG &amp; SVG</strong> — images for websites, email and social media.</li>
+    <li><strong>ODG</strong> — a fully editable format that opens in the free LibreOffice Draw, so you can keep editing your designs forever, at no cost.</li>
+  </ul>
+
+  <h3>How it works</h3>
+  <ul>
+    <li>Drop in your .pub files (Publisher 98 through Publisher 2021 supported).</li>
+    <li>We convert them and show you a free preview of every page.</li>
+    <li>Happy with the result? One $19 payment unlocks the whole batch as a ZIP.</li>
+  </ul>
+
+  <h3>Honest about quality</h3>
+  <p>Simple flyers, bulletins and brochures usually convert beautifully. Very complex multi-column layouts can shift, which is exactly why we show you the preview <em>before</em> asking for a cent. If anything in your paid batch disappoints you, reply to your receipt email and we'll refund you, no questions asked.</p>
+
+  <h3>Frequently asked questions</h3>
+  <p><strong>Can I still use Publisher after October 1, 2026?</strong><br>Perpetual-license copies (e.g. Publisher 2021) keep launching, but Microsoft 365 versions stop working, support and security updates end, and Microsoft recommends converting your files. Don't wait until the deadline week.</p>
+  <p><strong>How do I edit my designs after converting?</strong><br>Download the ODG versions and open them in LibreOffice Draw — free, no subscription, Windows/Mac/Linux.</p>
+  <p><strong>Is my data safe?</strong><br>Files are processed on our server, never shared, and automatically deleted within 24 hours.</p>
+</div></section>
+
+<footer>© 2026 PubRescue · <a href="mailto:support@pubrescue.app" style="color:#94a3b8">support@pubrescue.app</a></footer>
+
+<script>
+const API = "";
+let jobId = null, pollTimer = null;
+
+const drop = document.getElementById("drop");
+const input = document.getElementById("fileinput");
+const results = document.getElementById("results");
+const paybar = document.getElementById("paybar");
+const paybtn = document.getElementById("paybtn");
+
+drop.onclick = () => input.click();
+drop.ondragover = e => { e.preventDefault(); drop.classList.add("drag"); };
+drop.ondragleave = () => drop.classList.remove("drag");
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove("drag"); upload(e.dataTransfer.files); };
+input.onchange = () => upload(input.files);
+
+async function upload(fileList) {
+  const files = [...fileList].filter(f => f.name.toLowerCase().endsWith(".pub"));
+  if (!files.length) { alert("Please choose .pub (Microsoft Publisher) files."); return; }
+  const fd = new FormData();
+  files.forEach(f => fd.append("files", f));
+  fd.append("formats", "pdf,png,svg,odg");
+  results.style.display = "block";
+  results.innerHTML = '<p><span class="spinner"></span> Uploading ' + files.length + ' file(s)…</p>';
+  const r = await fetch(API + "/api/jobs", { method: "POST", body: fd });
+  if (!r.ok) { results.innerHTML = "<p class='status-error'>Upload failed — please try again.</p>"; return; }
+  const data = await r.json();
+  jobId = data.job_id;
+  render(data.files, false);
+  pollTimer = setInterval(poll, 2500);
+}
+
+async function poll() {
+  const r = await fetch(API + "/api/jobs/" + jobId);
+  if (!r.ok) return;
+  const data = await r.json();
+  render(data.files, data.paid);
+  if (data.files.every(f => f.status === "done" || f.status === "error")) {
+    clearInterval(pollTimer);
+    if (data.files.some(f => f.status === "done")) paybar.style.display = data.paid ? "none" : "block";
+    if (data.paid) showDownload();
+  }
+}
+
+function render(files, paid) {
+  results.style.display = "block";
+  results.innerHTML = files.map(f => {
+    let badge = f.status === "done" ? '<span class="status-done">✓ converted</span>'
+      : f.status === "error" ? '<span class="status-error">✗ ' + (f.error || "failed") + '</span>'
+      : '<span class="status-converting"><span class="spinner"></span> converting…</span>';
+    let img = f.previews && f.previews.length
+      ? '<a href="' + API + f.previews[0] + '" target="_blank"><img src="' + API + f.previews[0] + '" alt="preview"></a>' : "";
+    let pages = f.previews && f.previews.length > 1
+      ? '<div style="font-size:.85rem;color:#64748b">' + f.previews.length + ' page previews — click image to view</div>' : "";
+    return '<div class="filecard">' + img + '<div class="meta"><strong>' + f.name + '</strong><div>' + badge + '</div>' + pages + '</div></div>';
+  }).join("");
+}
+
+paybtn.onclick = async () => {
+  paybtn.disabled = true;
+  const r = await fetch(API + "/api/jobs/" + jobId + "/checkout", { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ success_url: location.origin + location.pathname + "?job=" + jobId + "&paid=1",
+                           cancel_url: location.origin + location.pathname + "?job=" + jobId }) });
+  const data = await r.json();
+  if (data.paid) { showDownload(); return; }
+  if (data.checkout_url) location.href = data.checkout_url;
+  else { alert("Payments aren't live yet — email support@pubrescue.app and we'll convert your batch manually."); paybtn.disabled = false; }
+};
+
+function showDownload() {
+  paybar.style.display = "block";
+  paybar.querySelector(".wrap").innerHTML =
+    '<a class="btn btn-big" href="' + API + "/api/jobs/" + jobId + '/download">⬇ Download your converted files (ZIP)</a>' +
+    '<div style="color:#64748b;font-size:.85rem;margin-top:6px">Link works for 24 hours. Previews are now un-watermarked too.</div>';
+}
+
+// Returning from Stripe checkout
+const params = new URLSearchParams(location.search);
+if (params.get("job")) {
+  jobId = params.get("job");
+  if (params.get("paid") === "1") {
+    fetch(API + "/api/jobs/" + jobId + "/verify", { method: "POST" })
+      .then(r => r.json()).then(d => { poll(); if (d.paid) showDownload(); });
+  } else { poll(); pollTimer = setInterval(poll, 2500); }
+}
+</script>
+</body>
+</html>

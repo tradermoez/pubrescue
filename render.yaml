@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: pubrescue
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: PRICE_CENTS
+        value: "1900"
+      - key: JOB_TTL_HOURS
+        value: "24"
+    healthCheckPath: /api/health
