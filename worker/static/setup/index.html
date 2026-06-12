@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Pinterest App Setup — assets</title>
+<link rel="stylesheet" href="/_shared.css">
+<style>
+.box{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;margin:16px 0}
+.copybtn{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:.95rem;cursor:pointer}
+textarea{width:100%;min-height:90px;font-family:inherit;font-size:.95rem;padding:10px;border:1px solid #cbd5e1;border-radius:6px}
+.url{background:#e2e8f0;padding:6px 10px;border-radius:5px;word-break:break-all;display:inline-block}
+img.icon{width:128px;height:128px;border-radius:18px;border:1px solid #e2e8f0}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="/">Pub<span>Rescue</span></a><div style="color:#64748b;font-size:.9rem">Internal setup page</div></div></header>
+<article class="wrap">
+<h1>Pinterest App Setup Assets</h1>
+<p>Everything you need to fill the Pinterest "create app" form. Copy from here in your Mac browser.</p>
+
+<div class="box">
+<h3>1. App icon</h3>
+<p>Right-click the image → <strong>Save Image As…</strong> (or use the download link), then upload it to Pinterest.</p>
+<img class="icon" src="/app-icon.png" alt="app icon">
+<p><a class="copybtn" style="text-decoration:none;display:inline-block" href="/app-icon.png" download="pubrescue-icon.png">⬇ Download icon (512×512 PNG)</a></p>
+</div>
+
+<div class="box">
+<h3>2. Privacy policy URL</h3>
+<p><span class="url" id="priv">https://pubrescue.onrender.com/privacy/</span>
+<button class="copybtn" onclick="copyText('https://pubrescue.onrender.com/privacy/',this)">Copy</button></p>
+</div>
+
+<div class="box">
+<h3>3. App purpose</h3>
+<textarea id="purpose" readonly>PubRescue publishes and manages product Pins for our own small-business spreadsheet templates. The app creates Pins on our own boards linking to our product pages, and reads our own Pin analytics to track performance. It does not access or post on behalf of other users.</textarea>
+<p><button class="copybtn" onclick="copyArea('purpose',this)">Copy app purpose</button></p>
+</div>
+
+<div class="box">
+<h3>4. Other fields (if asked)</h3>
+<p>App name: <span class="url">pubrescue</span><br>
+Website: <span class="url">https://pubrescue.onrender.com</span><br>
+Redirect URI: <span class="url">https://pubrescue.onrender.com/pinterest/callback</span></p>
+</div>
+
+<script>
+function copyText(t,btn){navigator.clipboard.writeText(t).then(()=>{btn.textContent="Copied!";setTimeout(()=>btn.textContent="Copy",1500);});}
+function copyArea(id,btn){const el=document.getElementById(id);navigator.clipboard.writeText(el.value).then(()=>{btn.textContent="Copied!";setTimeout(()=>btn.textContent="Copy app purpose",1500);});}
+</script>
+</article>
+</body>
+</html>
